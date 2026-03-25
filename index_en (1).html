@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Exhibition 'Flop or not?' at the Musée des Arts et Métiers, from March 12 to May 30, 2027. Failed inventions, interactive workshops and public votes."/>
+  <title>Flop or Not? — Exhibition 2027</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f2f2f0;
+      --card: #ffffff;
+      --border: #e0ddd8;
+      --gold: #c9a84c;
+      --gold-light: #f0e4c2;
+      --gold-dark: #a07830;
+      --gray: #9e9e9e;
+      --gray-light: #e8e8e8;
+      --text: #1a1a1a;
+      --muted: #777;
+      --radius: 18px;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(242,242,240,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 800; font-size: 1.1rem; color: var(--text);
+      text-decoration: none; letter-spacing: -.02em;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-logo small {
+      font-size: .65rem; font-weight: 500; color: var(--muted);
+      display: block; line-height: 1.2; letter-spacing: .02em;
+    }
+    .nav-links { display: flex; gap: 8px; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--muted); font-size: .85rem;
+      font-weight: 500; padding: 6px 14px; border-radius: 8px;
+      transition: background .15s, color .15s;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      background: var(--gold-light); color: var(--gold-dark);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; min-height: 85vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 80px 24px 60px;
+      overflow: hidden;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--gold-light); border: 1px solid rgba(201,168,76,.35);
+      color: var(--gold-dark); font-size: .72rem; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 999px; margin-bottom: 32px;
+      position: relative; z-index: 1;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(4rem, 12vw, 9rem);
+      font-weight: 900; line-height: 1;
+      letter-spacing: -.03em; margin-bottom: 24px;
+      color: var(--text); position: relative; z-index: 1;
+    }
+    .hero h1 .gold { color: var(--gold); }
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: var(--muted); max-width: 600px;
+      line-height: 1.7; margin-bottom: 16px;
+      position: relative; z-index: 1; font-style: italic;
+    }
+    .hero-date {
+      font-size: .85rem; font-weight: 600; color: var(--gold-dark);
+      letter-spacing: .08em; text-transform: uppercase;
+      margin-bottom: 48px; position: relative; z-index: 1;
+    }
+    .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; position: relative; z-index: 1; }
+    .btn-primary {
+      background: var(--gold); color: #fff; border: none;
+      padding: 14px 32px; border-radius: 999px; font-size: .9rem;
+      font-weight: 700; cursor: pointer; text-decoration: none;
+      transition: background .2s, transform .15s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--gold-dark); transform: translateY(-2px); }
+    .btn-secondary {
+      background: var(--card); color: var(--text);
+      border: 1px solid var(--border);
+      padding: 14px 32px; border-radius: 999px; font-size: .9rem;
+      font-weight: 600; cursor: pointer; text-decoration: none;
+      transition: border-color .2s, transform .15s;
+    }
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold-dark); transform: translateY(-2px); }
+
+    /* ── SCROLL INDICATOR ── */
+    .scroll-hint {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      color: var(--muted); font-size: .72rem; letter-spacing: .1em;
+      text-transform: uppercase; z-index: 1;
+    }
+    .scroll-hint::after {
+      content: '↓'; font-size: 1.2rem; animation: bounce 1.5s infinite;
+    }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+    /* ── DIVIDER ── */
+    hr.divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ── SECTION ── */
+    .section { padding: 80px 24px; max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      font-size: .72rem; font-weight: 700; color: var(--muted);
+      letter-spacing: .15em; text-transform: uppercase;
+      margin-bottom: 40px; display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::after { content: ''; flex:1; height: 1px; background: var(--border); }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem); font-weight: 800;
+      line-height: 1.15; margin-bottom: 20px; color: var(--text);
+    }
+    .section-title span { color: var(--gold); }
+
+    /* ── CONCEPT GRID ── */
+    .concept-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+      align-items: center;
+    }
+    @media(max-width:768px){ .concept-grid { grid-template-columns: 1fr; } }
+    .concept-text p {
+      color: var(--muted); line-height: 1.8; font-size: 1rem; margin-bottom: 16px;
+    }
+
+    .concept-image-wrapper {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,.08);
+      border: 1px solid var(--border);
+      display: flex;
+      margin-top: 24px;
+      margin-bottom: 24px;
+    }
+    .concept-image-wrapper img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      display: block;
+    }
+
+    .concept-visual {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 40px;
+      display: flex; flex-direction: column; gap: 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.06);
+    }
+    .fact { display: flex; align-items: flex-start; gap: 16px; }
+    .fact-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--gold-light); display: flex;
+      align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .fact-text strong { display: block; font-size: .9rem; font-weight: 700; margin-bottom: 2px; }
+    .fact-text span { font-size: .82rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── PROGRAMME ── */
+    .programme-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .programme-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px 24px;
+      position: relative; overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,.04);
+      transition: border-color .2s, transform .2s;
+    }
+    .programme-card:hover {
+      border-color: var(--gold); transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(201,168,76,.12);
+    }
+    .programme-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 3px; background: var(--gold);
+    }
+    .prog-time {
+      font-size: .72rem; font-weight: 700; color: var(--gold-dark);
+      letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px;
+    }
+    .prog-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .prog-desc { font-size: .83rem; color: var(--muted); line-height: 1.6; }
+    .prog-tag {
+      display: inline-block; margin-top: 14px;
+      font-size: .68rem; font-weight: 600;
+      background: var(--gold-light); color: var(--gold-dark);
+      padding: 3px 10px; border-radius: 999px;
+    }
+
+    /* ── TEASER ── */
+    .teaser-section {
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 60px 24px;
+    }
+    .teaser-inner { max-width: 900px; margin: 0 auto; }
+    .teaser-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    @media(max-width:640px){ .teaser-grid { grid-template-columns: 1fr; } }
+    .teaser-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 32px 24px; text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,.04);
+    }
+    .teaser-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem; font-weight: 900; color: var(--gold); margin-bottom: 8px;
+    }
+    .teaser-label { font-size: .85rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+    .teaser-sub { font-size: .78rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── LIEU ── */
+    .lieu-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 40px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.06);
+    }
+    @media(max-width:640px){ .lieu-card { grid-template-columns: 1fr; } }
+    .lieu-info h3 {
+      font-size: 1.4rem; font-weight: 800; margin-bottom: 8px;
+    }
+    .lieu-info p { font-size: .9rem; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
+    .lieu-detail {
+      display: flex; align-items: center; gap: 10px;
+      font-size: .85rem; color: var(--text); margin-bottom: 10px;
+    }
+    .lieu-detail .icon {
+      width: 32px; height: 32px; background: var(--gold-light);
+      border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; font-size: .9rem; flex-shrink: 0;
+    }
+    .lieu-detail a { color: inherit; text-decoration: none; }
+    .lieu-detail a:hover { text-decoration: underline; }
+    .lieu-image-wrapper {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+      max-height: 400px;
+      display: flex;
+      background: var(--gray-light);
+    }
+    .lieu-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--card); border-top: 1px solid var(--border);
+      padding: 40px 24px; text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem; font-weight: 900; color: var(--text); margin-bottom: 8px;
+    }
+    .footer-logo span { color: var(--gold); }
+    footer p { font-size: .8rem; color: var(--muted); margin-top: 6px; }
+    footer a { color: var(--gold-dark); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav aria-label="Main navigation">
+    <a class="nav-logo" href="index_en.html" aria-label="Home — Flop or Not?">
+      <div>
+        <div>Flop<span>?</span> or Not</div>
+        <small>Musée des Arts et Métiers · Le Cnam</small>
+      </div>
+    </a>
+  </nav>
+</header>
+
+<main>
+
+  <section class="hero" aria-labelledby="hero-title">
+    <p class="hero-eyebrow" aria-hidden="true">✦ Exhibition — 2027 Edition</p>
+    <h1 id="hero-title">Flop<span class="gold"> or</span><br/>not <span class="gold">?</span></h1>
+    <p class="hero-sub">"What if the worst inventions were the most interesting?"</p>
+    <p class="hero-date">📅 From March 12 to May 30, 2027 · Musée des Arts et Métiers, Paris</p>
+    <div class="hero-ctas">
+      <a href="#programme" class="btn-primary">See the programme</a>
+      <a href="evenement.html" class="btn-secondary">Edition 2026 →</a>
+    </div>
+    <p class="scroll-hint" aria-hidden="true">Discover</p>
+  </section>
+
+  <hr class="divider"/>
+
+  <section class="section" aria-labelledby="titre-concept">
+    <p class="section-label" aria-hidden="true">The concept</p>
+    <div class="concept-grid">
+      <div class="concept-text">
+        <h2 class="section-title" id="titre-concept">What is a <span>flop</span>?</h2>
+        <p>Every great invention hides behind it a long series of failures. Failed prototypes, abandoned ideas, projects mocked by contemporaries — and yet essential to progress.</p>
+        <p>The <strong>« Flop or Not? »</strong> exhibition invites you to flip the perspective: what if what we call failure is actually the necessary condition for all success? Through unusual objects, unpublished archives and interactive installations, the museum invites visitors to reconsider their relationship with error.</p>
+
+        <div class="concept-image-wrapper">
+          <img src="image_b50eed.png" alt="Flop or Not exhibition: Wavy ping-pong table" loading="lazy"/>
+        </div>
+
+        <a href="#programme" class="btn-primary">See the 2027 programme</a>
+      </div>
+
+      <div class="concept-visual" role="list" aria-label="Exhibition highlights">
+        <div class="fact" role="listitem">
+          <div class="fact-icon" aria-hidden="true">🔬</div>
+          <div class="fact-text">
+            <strong>Unusual objects</strong>
+            <span>Inventions never exhibited before, drawn from the museum's reserves</span>
+          </div>
+        </div>
+        <div class="fact" role="listitem">
+          <div class="fact-icon" aria-hidden="true">🎮</div>
+          <div class="fact-text">
+            <strong>Interactive experiences</strong>
+            <span>Workshops, public votes, hands-on areas to test the inventions</span>
+          </div>
+        </div>
+        <div class="fact" role="listitem">
+          <div class="fact-icon" aria-hidden="true">🎤</div>
+          <div class="fact-text">
+            <strong>Inventor interviews</strong>
+            <span>Creators share their failures, doubts and what they learned from them</span>
+          </div>
+        </div>
+        <div class="fact" role="listitem">
+          <div class="fact-icon" aria-hidden="true">🗳️</div>
+          <div class="fact-text">
+            <strong>Public vote</strong>
+            <span>You decide: flop or not? The audience votes in real time</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <section class="teaser-section" aria-labelledby="titre-chiffres">
+    <h2 id="titre-chiffres" class="sr-only">Key figures</h2>
+    <div class="teaser-inner">
+      <div class="teaser-grid">
+        <div class="teaser-card">
+          <p class="teaser-num">+40</p>
+          <p class="teaser-label">Inventions on display</p>
+          <p class="teaser-sub">Unusual objects from the museum's reserves</p>
+        </div>
+        <div class="teaser-card">
+          <p class="teaser-num">2,5 mois</p>
+          <p class="teaser-label">Immersive event</p>
+          <p class="teaser-sub">A long period of workshops, exhibitions and encounters</p>
+        </div>
+        <div class="teaser-card">
+          <p class="teaser-num">∞</p>
+          <p class="teaser-label">Questions raised</p>
+          <p class="teaser-sub">About failure, innovation and what we really call a flop</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <section class="section" id="programme" aria-labelledby="titre-programme">
+    <p class="section-label" aria-hidden="true">Programme</p>
+    <h2 class="section-title" id="titre-programme">The programme from <span>March 12 to May 30, 2027</span></h2>
+    <p style="color:var(--muted); margin-bottom:40px; max-width:580px; line-height:1.7;">Over two months to explore, question and vote. Here is an overview of the 2027 edition programme at the Musée des Arts et Métiers.</p>
+
+    <div class="programme-grid">
+      <article class="programme-card">
+        <p class="prog-time">From 1:00 PM — Opening</p>
+        <h3 class="prog-title">Welcome & free visit</h3>
+        <p class="prog-desc">Doors open. Free exploration of the permanent exhibition and spaces dedicated to the flops of history.</p>
+        <span class="prog-tag">🚪 Free entry</span>
+      </article>
+      <article class="programme-card">
+        <p class="prog-time">Mondays — Talk</p>
+        <h3 class="prog-title">"The history of great mistakes"</h3>
+        <p class="prog-desc">A historian of science traces the inventions that were first flops before becoming indispensable.</p>
+        <span class="prog-tag">🎤 Talk</span>
+      </article>
+      <article class="programme-card">
+        <p class="prog-time">Wednesdays — Workshop</p>
+        <h3 class="prog-title">Make your flop!</h3>
+        <p class="prog-desc">Group creative workshop: imagine and build the most useless invention possible. The public votes for the ultimate flop.</p>
+        <span class="prog-tag">🛠️ Participatory workshop</span>
+      </article>
+      <article class="programme-card">
+        <p class="prog-time">Saturdays — Debate</p>
+        <h3 class="prog-title">Flop or not? The big vote</h3>
+        <p class="prog-desc">Presentation of the 10 most controversial inventions in the museum. The public votes live: flop or misunderstood genius?</p>
+        <span class="prog-tag">🗳️ Public vote</span>
+      </article>
+      <article class="programme-card">
+        <p class="prog-time">Sundays — Round table</p>
+        <h3 class="prog-title">Meet the inventors</h3>
+        <p class="prog-desc">Contemporary creators share their own failures and what they taught them.</p>
+        <span class="prog-tag">💬 Round table</span>
+      </article>
+      <article class="programme-card">
+        <p class="prog-time">May 30 — Closing</p>
+        <h3 class="prog-title">Awarding of the Flop Prize 2027</h3>
+        <p class="prog-desc">The public names the most failed invention of the year. Festive ceremony and closing cocktail.</p>
+        <span class="prog-tag">🏆 Ceremony</span>
+      </article>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <section class="section" aria-labelledby="titre-lieu">
+    <p class="section-label" aria-hidden="true">Venue</p>
+    <div class="lieu-card">
+      <div class="lieu-info">
+        <h2 class="section-title" id="titre-lieu" style="font-size:1.4rem; margin-bottom:8px;">Musée des Arts et Métiers</h2>
+        <p>Founded in 1794, the Musée des Arts et Métiers holds exceptional scientific and technical collections. Affiliated with the Cnam, it houses over 80,000 objects and is the ideal setting for questioning innovation and its detours.</p>
+        <address>
+          <div class="lieu-detail">
+            <div class="icon" aria-hidden="true">📍</div>
+            <span>60 rue Réaumur, 75003 Paris</span>
+          </div>
+          <div class="lieu-detail">
+            <div class="icon" aria-hidden="true">🚇</div>
+            <span>Metro Arts et Métiers (lines 3 and 11)</span>
+          </div>
+          <div class="lieu-detail">
+            <div class="icon" aria-hidden="true">📞</div>
+            <a href="tel:+33153018200">+33 01 53 01 82 00</a>
+          </div>
+          <div class="lieu-detail">
+            <div class="icon" aria-hidden="true">📧</div>
+            <a href="mailto:musee-resa@cnam.fr">musee-resa@cnam.fr</a>
+          </div>
+        </address>
+        <div class="lieu-detail" style="margin-top:10px;">
+          <div class="icon" aria-hidden="true">🎟️</div>
+          <span>Free entry for students</span>
+        </div>
+      </div>
+      <div class="lieu-image-wrapper">
+        <img src="image_b49008.png" alt="Musée des Arts et Métiers facade, Paris" loading="lazy"/>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<hr class="divider"/>
+
+<footer>
+  <p class="footer-logo">Flop<span> or Not?</span></p>
+  <p>Exhibition at the Musée des Arts et Métiers · Le Cnam — From March 12 to May 30, 2027</p>
+  <nav aria-label="Footer navigation">
+    <p style="margin-top:16px;">
+      <a href="index_en.html">Home</a> &nbsp;·&nbsp;
+      <a href="evenement.html">Event 2026</a> &nbsp;·&nbsp;
+      <a href="equipe_v3.html">Our Team</a>
+    </p>
+  </nav>
+  <p style="margin-top:16px; font-size:.75rem;">© 2026 — SAÉ S2.06 · BUT Informatique · Université Sorbonne Paris Nord</p>
+</footer>
+
+</body>
+</html>
